@@ -20,7 +20,7 @@ const navLinks = [
     { name: 'Planner', href: '/planner', icon: HiOutlineCalendarDays },
 ];
 
-export const Navbar = ({ activeLink, setActiveLink }) => {
+export const Navbar = ({ activeLink, setActiveLink, isLoggedIn, onLogout }) => {
     const [mobileOpen, setMobileOpen] = useState(false);
 
     return (
@@ -29,7 +29,14 @@ export const Navbar = ({ activeLink, setActiveLink }) => {
 
                 {/* Left Side: Logo */}
                 <div className="flex flex-1 justify-start">
-                    <a href="/" className="flex items-center gap-3.5 no-underline group">
+                    <a
+                        href="/"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            if (setActiveLink) setActiveLink('/');
+                        }}
+                        className="flex items-center gap-3.5 no-underline group cursor-pointer"
+                    >
                         <div className="p-1.5 border-2 border-white bg-primary text-white shadow-[2px_2px_0px_0px_#000]">
                             <HiOutlineAcademicCap className="h-5 w-5 transition-transform duration-100 group-hover:scale-110" />
                         </div>
@@ -45,15 +52,26 @@ export const Navbar = ({ activeLink, setActiveLink }) => {
                 </div>
 
                 <div className="hidden md:flex flex-1 justify-end items-center">
-                    <Link
-                        to="/login"
-                        onClick={() => setActiveLink && setActiveLink('/login')}
-                        className="flex items-center gap-2 rounded-none border-2 border-white bg-surface px-3.5 py-1.5 font-['Press_Start_2P'] text-[9px] text-text-secondary
-                       hover:text-white hover:bg-surface-lighter hover:border-white transition-all duration-75 shadow-[3px_3px_0px_0px_#000] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none cursor-pointer uppercase no-underline"
-                    >
-                        <HiOutlineArrowRightOnRectangle className="h-3 w-3" />
-                        Get Started
-                    </Link>
+                    {isLoggedIn ? (
+                        <button
+                            onClick={onLogout}
+                            className="flex items-center gap-2 rounded-none border-2 border-white bg-surface px-3.5 py-1.5 font-['Press_Start_2P'] text-[9px] text-text-secondary
+                           hover:text-white hover:bg-surface-lighter hover:border-white transition-all duration-75 shadow-[3px_3px_0px_0px_#000] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none cursor-pointer uppercase"
+                        >
+                            <HiOutlineArrowRightOnRectangle className="h-3 w-3" />
+                            Logout
+                        </button>
+                    ) : (
+                        <Link
+                            to="/login"
+                            onClick={() => setActiveLink && setActiveLink('/login')}
+                            className="flex items-center gap-2 rounded-none border-2 border-white bg-surface px-3.5 py-1.5 font-['Press_Start_2P'] text-[9px] text-text-secondary
+                           hover:text-white hover:bg-surface-lighter hover:border-white transition-all duration-75 shadow-[3px_3px_0px_0px_#000] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none cursor-pointer uppercase no-underline"
+                        >
+                            <HiOutlineArrowRightOnRectangle className="h-3 w-3" />
+                            Log In
+                        </Link>
+                    )}
                 </div>
 
                 {/* Mobile Menu Toggle Button */}
@@ -102,14 +120,31 @@ export const Navbar = ({ activeLink, setActiveLink }) => {
                         );
                     })}
                     <div className="border-t-2 border-white pt-2 mt-2">
-                        <button
-                            onClick={() => console.log('logout clicked')}
-                            className="flex w-full items-center gap-3 rounded-none border-2 border-transparent px-3 py-2 text-[9px] font-['Press_Start_2P'] text-text-secondary bg-transparent text-left
-                         hover:bg-surface-lighter hover:text-white transition-all duration-75 cursor-pointer uppercase"
-                        >
-                            <HiOutlineArrowRightOnRectangle className="h-3.5 w-3.5" />
-                            <span>Logout</span>
-                        </button>
+                        {isLoggedIn ? (
+                            <button
+                                onClick={() => {
+                                    if (onLogout) onLogout();
+                                    setMobileOpen(false);
+                                }}
+                                className="flex w-full items-center gap-3 rounded-none border-2 border-transparent px-3 py-2 text-[9px] font-['Press_Start_2P'] text-text-secondary bg-transparent text-left
+                             hover:bg-surface-lighter hover:text-white transition-all duration-75 cursor-pointer uppercase"
+                            >
+                                <HiOutlineArrowRightOnRectangle className="h-3.5 w-3.5" />
+                                <span>Logout</span>
+                            </button>
+                        ) : (
+                            <button
+                                onClick={() => {
+                                    if (setActiveLink) setActiveLink('/login');
+                                    setMobileOpen(false);
+                                }}
+                                className="flex w-full items-center gap-3 rounded-none border-2 border-transparent px-3 py-2 text-[9px] font-['Press_Start_2P'] text-text-secondary bg-transparent text-left
+                             hover:bg-surface-lighter hover:text-white transition-all duration-75 cursor-pointer uppercase"
+                            >
+                                <HiOutlineArrowRightOnRectangle className="h-3.5 w-3.5" />
+                                <span>Log In</span>
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>

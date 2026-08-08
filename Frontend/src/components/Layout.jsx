@@ -10,7 +10,7 @@ import {
   HiOutlineHome,
 } from 'react-icons/hi2';
 
-export default function Layout({ children, activeLink, setActiveLink }) {
+export default function Layout({ children, activeLink, setActiveLink, isLoggedIn, onLogout }) {
   const dockItems = [
     {
       icon: <HiOutlineHome size={18} className={activeLink === '/' ? "text-primary-light" : "text-text-secondary"} />,
@@ -58,7 +58,7 @@ export default function Layout({ children, activeLink, setActiveLink }) {
 
       {/* Header Navbar */}
       <div className="relative z-20">
-        <Navbar activeLink={activeLink} setActiveLink={setActiveLink} />
+        <Navbar activeLink={activeLink} setActiveLink={setActiveLink} isLoggedIn={isLoggedIn} onLogout={onLogout} />
       </div>
 
       {/* Main Workspace Body */}
@@ -66,17 +66,19 @@ export default function Layout({ children, activeLink, setActiveLink }) {
         {children}
       </main>
 
-      {/* Bottom Interactive Navigation Dock */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center pb-4 pointer-events-none">
-        <div className="pointer-events-auto">
-          <Dock
-            items={dockItems}
-            panelHeight={64}
-            baseItemSize={48}
-            magnification={64}
-          />
+      {/* Bottom Interactive Navigation Dock - Only shown when user is logged in */}
+      {isLoggedIn && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center pb-4 pointer-events-none">
+          <div className="pointer-events-auto">
+            <Dock
+              items={dockItems}
+              panelHeight={64}
+              baseItemSize={48}
+              magnification={64}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

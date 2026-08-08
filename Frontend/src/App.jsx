@@ -42,33 +42,53 @@ const Planner = () => (
 );
 
 function App() {
-  const [activeLink, setActiveLink] = useState('/'); 
+  const [activeLink, setActiveLink] = useState('/');
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return localStorage.getItem('isLoggedIn') === 'true';
+  });
+
+  const handleLogin = () => {
+    localStorage.setItem('isLoggedIn', 'true');
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    setIsLoggedIn(false);
+    setActiveLink('/');
+  };
 
   const renderContent = () => {
     switch (activeLink) {
       case '/':
-        return <LandingPage setActiveLink={setActiveLink} />;
+        return <LandingPage setActiveLink={setActiveLink} isLoggedIn={isLoggedIn} />;
       case '/uploadPdf':
-        return <UploadPdf/>;
-      case '/chat':
-        return <Chat />;
       case '/UploadPdf':
         return <UploadPdf />;
+      case '/chat':
+        return <Chat />;
+      case '/quiz':
+        return <Quiz />;
       case '/flashcards':
         return <Flashcards />;
       case '/planner':
         return <Planner />;
       case '/login':
-        return <Login setActiveLink={setActiveLink} />;
+        return <Login setActiveLink={setActiveLink} onLogin={handleLogin} />;
       case '/register':
-        return <Register setActiveLink={setActiveLink} />;
+        return <Register setActiveLink={setActiveLink} onLogin={handleLogin} />;
       default:
-        return <LandingPage setActiveLink={setActiveLink} />;
+        return <LandingPage setActiveLink={setActiveLink} isLoggedIn={isLoggedIn} />;
     }
   };
 
   return (
-    <Layout activeLink={activeLink} setActiveLink={setActiveLink}>
+    <Layout
+      activeLink={activeLink}
+      setActiveLink={setActiveLink}
+      isLoggedIn={isLoggedIn}
+      onLogout={handleLogout}
+    >
       {renderContent()}
     </Layout>
   )
