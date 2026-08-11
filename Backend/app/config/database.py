@@ -1,5 +1,6 @@
 import os
-from pymongo import AsyncMongoClient
+import certifi
+from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -7,8 +8,12 @@ load_dotenv()
 MONGO_URI = os.getenv("MONGO_URI")
 DATABASE_NAME = os.getenv("DB_NAME")
 
-
-client = AsyncMongoClient(MONGO_URI)
+client = AsyncIOMotorClient(
+    MONGO_URI,
+    tlsCAFile=certifi.where(),
+    serverSelectionTimeoutMS=5000,
+    connectTimeoutMS=5000
+)
 db = client[DATABASE_NAME]
 
 users_collection = db["users"]

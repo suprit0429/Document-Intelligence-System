@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import API from '../services/api';
 import {
   HiOutlineEnvelope,
   HiOutlineLockClosed,
@@ -11,14 +12,14 @@ import {
 } from 'react-icons/hi2';
 import LiquidEther from '../components/resuableComponent/LiquidEther';
 
-export default function Login({ setActiveLink }) {
+export default function Login({ setActiveLink, onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
@@ -28,11 +29,16 @@ export default function Login({ setActiveLink }) {
     }
 
     setIsSubmitting(true);
-
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const res = await API.post('/auth/login', { email, password });
+      localStorage.setItem('token', res.data.token);
+      if (onLogin) onLogin();
       if (setActiveLink) setActiveLink('/dashboard');
-    }, 1000);
+    } catch (err) {
+      setError(err.response?.data?.detail?.toUpperCase() || 'LOGIN FAILED. TRY AGAIN.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

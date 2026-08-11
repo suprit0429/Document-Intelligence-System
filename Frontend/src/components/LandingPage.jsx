@@ -61,7 +61,7 @@ export const LandingPage = ({ setActiveLink }) => {
 
 
             <button
-              onClick={() => setActiveLink('/dashboard')}
+              onClick={() => setActiveLink('/login')}
               className="font-['Press_Start_2P'] text-xs sm:text-sm px-8 py-4 border-4 border-white bg-primary text-white font-bold transition-all duration-75 shadow-[6px_6px_0px_0px_#000] hover:shadow-[4px_4px_0px_0px_#000] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none hover:bg-primary-light cursor-pointer uppercase"
             >
               Get Started
