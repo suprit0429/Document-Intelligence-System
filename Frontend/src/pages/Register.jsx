@@ -51,7 +51,10 @@ export default function Register({ setActiveLink, onLogin }) {
     }
     setIsSubmitting(true);
     try {
-      await API.post("/auth/verify-otp", { email, otp });
+      const res = await API.post("/auth/verify-otp", { email, otp });
+      if (res.data?.token) {
+        localStorage.setItem("token", res.data.token);
+      }
       if (onLogin) onLogin();
       if (setActiveLink) setActiveLink("/dashboard");
     } catch (err) {

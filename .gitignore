@@ -1,0 +1,21 @@
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+Backend/.env
+Frontend/.env
+!.env.example
+!Backend/.env.example
+
+# Python pycache
+__pycache__/
+*.pyc
+
+# Dependencies & Build
+node_modules/
+dist/
+build/
+
+# Logs
+*.log

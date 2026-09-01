@@ -8,7 +8,7 @@ import {
   HiOutlineArrowRight,
   HiOutlineArrowPath
 } from 'react-icons/hi2';
-import API from '../services/api';
+import API from '../../../services/api';
 
 export const UploadPdf = () => {
   const [file, setFile] = useState(null);

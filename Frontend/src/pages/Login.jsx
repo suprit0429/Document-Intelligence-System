@@ -10,7 +10,7 @@ import {
   HiOutlineSparkles,
   HiOutlineShieldCheck
 } from 'react-icons/hi2';
-import LiquidEther from '../components/resuableComponent/LiquidEther';
+import LiquidEther from '../components/animations/LiquidEther';
 
 export default function Login({ setActiveLink, onLogin }) {
   const [email, setEmail] = useState('');

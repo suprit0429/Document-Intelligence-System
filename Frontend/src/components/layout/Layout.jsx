@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navbar } from './Navbar';
-import Dock from './Dock';
+import Dock from '../ui/Dock';
 import {
   HiOutlineChatBubbleLeftRight,
   HiOutlineLightBulb,
@@ -8,6 +8,7 @@ import {
   HiOutlineSquares2X2,
   HiOutlineSparkles,
   HiOutlineHome,
+  HiOutlineCpuChip,
 } from 'react-icons/hi2';
 
 export default function Layout({ children, activeLink, setActiveLink, isLoggedIn, onLogout }) {
@@ -66,8 +67,8 @@ export default function Layout({ children, activeLink, setActiveLink, isLoggedIn
         {children}
       </main>
 
-      {/* Bottom Interactive Navigation Dock - Only shown when user is logged in */}
-      {isLoggedIn && (
+      {/* Bottom Interactive Navigation Dock - Only shown when user is logged in and not on public/auth pages */}
+      {isLoggedIn && activeLink !== '/' && activeLink !== '/login' && activeLink !== '/register' && (
         <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center pb-4 pointer-events-none">
           <div className="pointer-events-auto">
             <Dock

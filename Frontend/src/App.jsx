@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import './App.css'
-import LandingPage from './components/LandingPage';
-import Layout from './components/Layout';
-import { UploadPdf } from './components/UploadPdf';
+import LandingPage from './pages/LandingPage';
+import Layout from './components/layout/Layout';
+import { UploadPdf } from './components/features/upload/UploadPdf';
 import Login from './pages/Login';
 import Register from './pages/Register';
+
+import Services from './pages/services';
 
 const Dashboard = () => (
   <div className="bg-surface-light/40 border border-border p-6 rounded-xl backdrop-blur-md">
@@ -44,7 +46,7 @@ const Planner = () => (
 function App() {
   const [activeLink, setActiveLink] = useState('/');
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    return localStorage.getItem('isLoggedIn') === 'true';
+    return localStorage.getItem('isLoggedIn') === 'true' && Boolean(localStorage.getItem('token'));
   });
 
   const handleLogin = () => {
@@ -54,6 +56,8 @@ function App() {
 
   const handleLogout = () => {
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('token');
+    sessionStorage.clear();
     setIsLoggedIn(false);
     setActiveLink('/');
   };
@@ -62,6 +66,8 @@ function App() {
     switch (activeLink) {
       case '/':
         return <LandingPage setActiveLink={setActiveLink} isLoggedIn={isLoggedIn} />;
+      case '/services':
+        return <Services setActiveLink={setActiveLink} />;
       case '/uploadPdf':
       case '/UploadPdf':
         return <UploadPdf />;

@@ -175,9 +175,12 @@ async def verify_otp(data: VerifyOTPRequest):
         "_id": record["_id"]
     })
 
+    token = create_access_token(str(result.inserted_id))
+
     return {
         "message": "Account created successfully",
-        "user_id": str(result.inserted_id)
+        "user_id": str(result.inserted_id),
+        "token": token
     }
 @router.post("/resend-otp")
 async def resend_otp(data: ResendOtpRequest):

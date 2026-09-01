@@ -5,3 +5,16 @@ python-dotenv
 PyJWT
 pwdlib[argon2]
 email-validator
+motor
+certifi
+langchain-community
+langchain-core
+langchain-groq
+langchain-huggingface
+langchain-text-splitters
+faiss-cpu
+pypdf
+sentence-transformers
+rank-bm25
+docx2txt
+unstructured

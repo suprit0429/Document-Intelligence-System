@@ -1,9 +1,12 @@
 import os
+import sys
+if sys.stdout.encoding != 'utf-8':
+    sys.stdout.reconfigure(encoding='utf-8')
 from dotenv import load_dotenv
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.retrievers import BM25Retriever
 from langchain_community.vectorstores import FAISS
-from langchain_classic.retrievers import EnsembleRetriever
+from langchain.retrievers import EnsembleRetriever
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnableLambda, RunnableParallel, RunnablePassthrough
@@ -12,7 +15,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 load_dotenv()
-model=ChatGroq(model="llama-3.3-70b-versatile")
+model=ChatGroq(model="openai/gpt-oss-120b")
 embedding=HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 # ─────────────────────────────────────────────────────────────────────────────
 # STEP 2: Document Loader & Processor (PDF only)
@@ -262,31 +265,52 @@ def main():
     print("       📄  Document Intelligence Bot  🤖")
     print("═" * 60)
 
-    # ── Step 1: Load document ──────────────────────────────────
-    file_path = input("\nEnter path to your PDF file: ").strip()
-    try:
-        documents = load_document(file_path)
-    except (FileNotFoundError, ValueError) as e:
-        print(f"[ERROR] {e}")
+    # Step 1: Load document 
+    file_paths_input = input("\nEnter PDFs path separated by commas: ").strip()
+
+    file_paths = [
+        path.strip().strip('"')
+        for path in file_paths_input.split(",")
+        if path.strip()
+    ]
+
+    all_documents = []
+    for file_path in file_paths:
+        try:
+            documents = load_document(file_path)
+            all_documents.extend(documents)
+            print(f"Loaded: {file_path} ({len(documents)} pages)")
+        except (FileNotFoundError, ValueError) as e:
+            print(f"[ERROR] {e}")
+    if not all_documents:
+        print("[ERROR] No documents loaded.")
         return
+    
+    print(
+        f"\n[INFO] Total documents loaded: {len(file_paths)}"
+    )
 
-    # ── Step 2: Chunk ──────────────────────────────────────────
-    chunks = chunk_documents(documents)
+    print(
+        f"[INFO] Total pages loaded: {len(all_documents)}"
+    )
 
-    # ── Step 3: Build vector store (in-memory) ─────────────────
+    # Step 2: Chunk
+    chunks = chunk_documents(all_documents)
+
+    # step 3: Build vector store (in-memory)
     vector_store = build_vector_store(chunks)
 
-    # ── Step 4: Build hybrid retriever ────────────────────────
+    # Step 4: Build hybrid retriever 
     retriever = build_retriever(chunks, vector_store)
 
-    # ── Step 5: Assemble RAG chain ────────────────────────────
+    # Step 5: Assemble RAG chain
     chain = build_rag_chain(retriever)
 
     print("\n✅ Bot is ready! Ask anything about your document.")
     print("   Type 'exit' or 'quit' to end the session.\n")
     print("─" * 60)
 
-    # ── Step 6: Multi-question loop ───────────────────────────
+    # Step 6: Multi-question loop 
     while True:
         question = input("\n❓ Your question: ").strip()
 
