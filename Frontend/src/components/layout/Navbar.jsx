@@ -1,32 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { HiOutlineAcademicCap } from 'react-icons/hi';
 import {
-    HiOutlineChatBubbleLeftRight,
-    HiOutlineLightBulb,
-    HiOutlineCalendarDays,
-    HiOutlineSquares2X2,
     HiOutlineBars3,
     HiOutlineXMark,
-    HiOutlineArrowRightOnRectangle,
-    HiOutlineSparkles,
+    HiOutlineArrowRight,
     HiOutlineSun,
     HiOutlineMoon,
 } from 'react-icons/hi2';
 
-const navLinks = [
-    { name: 'Dashboard', href: '/dashboard', icon: HiOutlineSquares2X2 },
-    { name: 'Chat', href: '/chat', icon: HiOutlineChatBubbleLeftRight },
-    { name: 'Quiz', href: '/quiz', icon: HiOutlineLightBulb },
-    { name: 'Flashcards', href: '/flashcards', icon: HiOutlineSparkles },
-    { name: 'Planner', href: '/planner', icon: HiOutlineCalendarDays },
+const centerLinks = [
+
+    { name: 'Services', href: '/services' }
+    
 ];
 
 export const Navbar = ({ activeLink, setActiveLink, isLoggedIn, onLogout }) => {
     const [mobileOpen, setMobileOpen] = useState(false);
-    const [theme, setTheme] = useState(() => {
-        return localStorage.getItem('theme') || 'dark';
-    });
+    const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
 
     useEffect(() => {
         if (theme === 'light') {
@@ -39,170 +28,96 @@ export const Navbar = ({ activeLink, setActiveLink, isLoggedIn, onLogout }) => {
         localStorage.setItem('theme', theme);
     }, [theme]);
 
-    const toggleTheme = () => {
-        setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
-    };
+    const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
 
     return (
-        <nav className="sticky top-0 z-50 w-full bg-transparent text-text-primary select-none">
+        <nav className="sticky top-0 z-50 w-full bg-surface/90 backdrop-blur border-b border-border text-text-primary select-none">
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
-                {/* Left Side: Logo */}
-                <div className="flex flex-1 justify-start">
-                    <a
-                        href="/"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            if (setActiveLink) setActiveLink('/');
-                        }}
-                        className="flex items-center gap-3.5 no-underline group cursor-pointer"
-                    >
-                        <div className="p-1.5 border-2 border-border bg-primary text-white shadow-[2px_2px_0px_0px_#000]">
-                            <HiOutlineAcademicCap className="h-5 w-5 transition-transform duration-100 group-hover:scale-110" />
-                        </div>
-                        <span className="text-[9px] sm:text-xs font-bold tracking-widest text-text-primary select-none font-['Press_Start_2P'] uppercase">
-                            DOCUMENT-INTELLIGENCE-SYSTEM
-                        </span>
-                    </a>
+                <a
+                    href="/"
+                    onClick={(e) => { e.preventDefault(); setActiveLink?.('/'); }}
+                    className="font-['Dancing_Script'] cursive text-2xl font-bold text-text-primary no-underline"
+                >
+                    Document-Intelligence-System
+                </a>
+
+                {/* Center: Nav Links */}
+                <div className="hidden md:flex items-center gap-8">
+                    {centerLinks.map(link => (
+                        <a
+                            key={link.name}
+                            href={link.href}
+                            onClick={(e) => { e.preventDefault(); setActiveLink?.(link.href); }}
+                            className={`text-sm font-medium no-underline transition-colors duration-150 cursor-pointer
+                                ${activeLink === link.href ? 'text-text-primary' : 'text-text-secondary hover:text-text-primary'}`}
+                        >
+                            {link.name}
+                        </a>
+                    ))}
                 </div>
 
-                {/* Center: Desktop Nav */}
-                <div className="hidden md:flex flex-1 justify-center">
-                    {/* Managed by the bottom Dock component */}
-                </div>
-
-                {/* Right Side: Theme Toggle & Login/Logout */}
-                <div className="hidden md:flex flex-1 justify-end items-center gap-3">
-                    {/* Theme Toggle Button */}
+                {/* Right: Theme + CTA */}
+                <div className="hidden md:flex items-center gap-3">
                     <button
                         onClick={toggleTheme}
-                        title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
-                        className="flex items-center gap-1.5 rounded-none border-2 border-border bg-surface px-2.5 py-1.5 font-['Press_Start_2P'] text-[9px] text-text-secondary
-                        hover:text-text-primary hover:bg-surface-lighter transition-all duration-75 shadow-[3px_3px_0px_0px_#000] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none cursor-pointer uppercase"
+                        className="flex items-center justify-center h-9 w-9 rounded-full text-text-secondary hover:text-text-primary transition-colors cursor-pointer"
                     >
-                        {theme === 'dark' ? (
-                            <>
-                                <HiOutlineSun className="h-3.5 w-3.5 text-amber-400" />
-                                <span>Light</span>
-                            </>
-                        ) : (
-                            <>
-                                <HiOutlineMoon className="h-3.5 w-3.5 text-indigo-400" />
-                                <span>Dark</span>
-                            </>
-                        )}
+                        {theme === 'dark'
+                            ? <HiOutlineMoon className="h-5 w-5 text-indigo-400" />
+                            : <HiOutlineSun className="h-5 w-5 text-amber-400" />}
                     </button>
 
                     {isLoggedIn ? (
                         <button
                             onClick={onLogout}
-                            className="flex items-center gap-2 rounded-none border-2 border-border bg-surface px-3.5 py-1.5 font-['Press_Start_2P'] text-[9px] text-text-secondary
-                           hover:text-text-primary hover:bg-surface-lighter transition-all duration-75 shadow-[3px_3px_0px_0px_#000] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none cursor-pointer uppercase"
+                            className="flex items-center gap-2 px-5 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-light transition-colors cursor-pointer"
                         >
-                            <HiOutlineArrowRightOnRectangle className="h-3 w-3" />
                             Logout
                         </button>
                     ) : (
-                        <Link
-                            to="/login"
-                            onClick={() => setActiveLink && setActiveLink('/login')}
-                            className="flex items-center gap-2 rounded-none border-2 border-border bg-surface px-3.5 py-1.5 font-['Press_Start_2P'] text-[9px] text-text-secondary
-                           hover:text-text-primary hover:bg-surface-lighter transition-all duration-75 shadow-[3px_3px_0px_0px_#000] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none cursor-pointer uppercase no-underline"
+                        <button
+                            onClick={() => setActiveLink?.('/login')}
+                            className="flex items-center gap-2 px-5 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-light transition-colors cursor-pointer"
                         >
-                            <HiOutlineArrowRightOnRectangle className="h-3 w-3" />
-                            Log In
-                        </Link>
+                            Get Started <HiOutlineArrowRight className="h-4 w-4" />
+                        </button>
                     )}
                 </div>
 
-                {/* Mobile Menu Toggle Button */}
+                {/* Mobile: Theme + Hamburger */}
                 <div className="flex md:hidden items-center gap-2">
-                    <button
-                        onClick={toggleTheme}
-                        title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
-                        className="flex h-8 w-8 items-center justify-center rounded-none border-2 border-border bg-surface text-text-secondary
-                       hover:text-text-primary hover:bg-surface-lighter transition-all duration-75 shadow-[2px_2px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none cursor-pointer"
-                    >
-                        {theme === 'dark' ? <HiOutlineSun className="h-4 w-4 text-amber-400" /> : <HiOutlineMoon className="h-4 w-4 text-indigo-400" />}
+                    <button onClick={toggleTheme} className="flex h-8 w-8 items-center justify-center rounded-full text-text-secondary cursor-pointer">
+                        {theme === 'dark' ? <HiOutlineMoon className="h-4 w-4 text-indigo-400" /> : <HiOutlineSun className="h-4 w-4 text-amber-400" />}
                     </button>
-                    <button
-                        onClick={() => setMobileOpen(!mobileOpen)}
-                        className="flex h-8 w-8 items-center justify-center rounded-none border-2 border-border bg-surface text-text-secondary
-                       hover:text-text-primary hover:bg-surface-lighter transition-all duration-75 shadow-[2px_2px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none cursor-pointer"
-                    >
-                        {mobileOpen ? <HiOutlineXMark className="h-4.5 w-4.5" /> : <HiOutlineBars3 className="h-4.5 w-4.5" />}
+                    <button onClick={() => setMobileOpen(!mobileOpen)} className="flex h-8 w-8 items-center justify-center text-text-secondary cursor-pointer">
+                        {mobileOpen ? <HiOutlineXMark className="h-5 w-5" /> : <HiOutlineBars3 className="h-5 w-5" />}
                     </button>
                 </div>
             </div>
 
-            {/* Mobile Menu Dropdown */}
-            <div
-                className={`
-          overflow-hidden bg-surface border-4 border-border transition-all duration-200 ease-in-out md:hidden mx-4 mt-2 mb-4 shadow-[6px_6px_0px_0px_#000]
-          ${mobileOpen ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}
-        `}
-            >
-                <div className="p-3 space-y-2">
-                    {navLinks.map((link) => {
-                        const Icon = link.icon;
-                        const isActive = activeLink === link.href;
-                        return (
-                            <a
-                                key={link.name}
-                                href={link.href}
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setActiveLink(link.href);
-                                    setMobileOpen(false);
-                                }}
-                                className={`
-                  flex items-center gap-3 rounded-none border-2 px-3 py-2.5 text-[9px] font-['Press_Start_2P'] no-underline transition-all duration-75 uppercase
-                  ${isActive
-                                        ? 'bg-primary text-white border-white shadow-[2px_2px_0px_0px_#000]'
-                                        : 'bg-surface-light text-text-secondary border-transparent hover:text-white hover:bg-surface-lighter'
-                                    }
-                `}
-                            >
-                                <Icon className={`h-3.5 w-3.5 ${isActive ? 'text-white' : 'text-text-secondary'}`} />
-                                <span>{link.name}</span>
-                            </a>
-                        );
-                    })}
-                    <div className="border-t-2 border-white pt-2 mt-2 space-y-2">
-                        <button
-                            onClick={toggleTheme}
-                            className="flex w-full items-center gap-3 rounded-none border-2 border-transparent px-3 py-2 text-[9px] font-['Press_Start_2P'] text-text-secondary bg-transparent text-left
-                         hover:bg-surface-lighter hover:text-white transition-all duration-75 cursor-pointer uppercase"
+            {/* Mobile Dropdown */}
+            <div className={`md:hidden overflow-hidden transition-all duration-200 ${mobileOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
+                <div className="px-4 pb-4 flex flex-col gap-2 border-t border-border">
+                    {centerLinks.map(link => (
+                        <a
+                            key={link.name}
+                            href={link.href}
+                            onClick={(e) => { e.preventDefault(); setActiveLink?.(link.href); setMobileOpen(false); }}
+                            className="text-sm text-text-secondary hover:text-text-primary py-2 no-underline cursor-pointer"
                         >
-                            {theme === 'dark' ? <HiOutlineSun className="h-3.5 w-3.5 text-amber-400" /> : <HiOutlineMoon className="h-3.5 w-3.5 text-indigo-400" />}
-                            <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+                            {link.name}
+                        </a>
+                    ))}
+                    {isLoggedIn ? (
+                        <button onClick={() => { onLogout?.(); setMobileOpen(false); }} className="mt-2 px-5 py-2 rounded-lg bg-primary text-white text-sm font-semibold cursor-pointer">
+                            Logout
                         </button>
-                        {isLoggedIn ? (
-                            <button
-                                onClick={() => {
-                                    if (onLogout) onLogout();
-                                    setMobileOpen(false);
-                                }}
-                                className="flex w-full items-center gap-3 rounded-none border-2 border-transparent px-3 py-2 text-[9px] font-['Press_Start_2P'] text-text-secondary bg-transparent text-left
-                             hover:bg-surface-lighter hover:text-white transition-all duration-75 cursor-pointer uppercase"
-                            >
-                                <HiOutlineArrowRightOnRectangle className="h-3.5 w-3.5" />
-                                <span>Logout</span>
-                            </button>
-                        ) : (
-                            <button
-                                onClick={() => {
-                                    if (setActiveLink) setActiveLink('/login');
-                                    setMobileOpen(false);
-                                }}
-                                className="flex w-full items-center gap-3 rounded-none border-2 border-transparent px-3 py-2 text-[9px] font-['Press_Start_2P'] text-text-secondary bg-transparent text-left
-                             hover:bg-surface-lighter hover:text-white transition-all duration-75 cursor-pointer uppercase"
-                            >
-                                <HiOutlineArrowRightOnRectangle className="h-3.5 w-3.5" />
-                                <span>Log In</span>
-                            </button>
-                        )}
-                    </div>
+                    ) : (
+                        <button onClick={() => { setActiveLink?.('/login'); setMobileOpen(false); }} className="mt-2 px-5 py-2 rounded-lg bg-primary text-white text-sm font-semibold flex items-center gap-2 cursor-pointer">
+                            Get Started <HiOutlineArrowRight className="h-4 w-4" />
+                        </button>
+                    )}
                 </div>
             </div>
         </nav>

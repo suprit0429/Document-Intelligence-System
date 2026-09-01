@@ -1,16 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import API from '../services/api';
-import {
-  HiOutlineEnvelope,
-  HiOutlineLockClosed,
-  HiOutlineEye,
-  HiOutlineEyeSlash,
-  HiOutlineArrowRight,
-  HiOutlineSparkles,
-  HiOutlineShieldCheck
-} from 'react-icons/hi2';
-import LiquidEther from '../components/animations/LiquidEther';
+import { HiOutlineEye, HiOutlineEyeSlash, HiOutlineArrowRight } from 'react-icons/hi2';
 
 export default function Login({ setActiveLink, onLogin }) {
   const [email, setEmail] = useState('');
@@ -22,12 +12,6 @@ export default function Login({ setActiveLink, onLogin }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
-    if (!email || !password) {
-      setError('PLEASE FILL IN ALL REQUIRED CREDENTIAL FIELDS.');
-      return;
-    }
-
     setIsSubmitting(true);
     try {
       const res = await API.post('/auth/login', { email, password });
@@ -35,150 +19,122 @@ export default function Login({ setActiveLink, onLogin }) {
       if (onLogin) onLogin();
       if (setActiveLink) setActiveLink('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.detail?.toUpperCase() || 'LOGIN FAILED. TRY AGAIN.');
+      setError(err.response?.data?.detail || 'Login failed. Try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="relative min-h-[calc(100vh-6rem)] w-full flex flex-col justify-center items-center overflow-hidden bg-transparent text-white px-4 py-8">
-      {/* Background Liquid Canvas */}
-      <div className="absolute inset-0 z-0 opacity-60 pointer-events-none">
-        <LiquidEther
-          colors={['#5227FF', '#FF9FFC']}
-          mouseForce={20}
-          cursorSize={80}
-          autoDemo={true}
-          autoSpeed={0.6}
-          autoIntensity={2.5}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent pointer-events-none"></div>
-      </div>
+    <div className="min-h-[calc(100vh-4rem)] w-full flex items-center justify-center px-4 py-10 bg-transparent">
+      <div className="w-full max-w-4xl flex rounded-2xl overflow-hidden shadow-2xl border border-border">
 
-      {/* Main Retro Card Container */}
-      <div className="relative z-10 w-full max-w-md mx-auto">
-        <div className="w-full border-4 border-white bg-surface/95 shadow-[8px_8px_0px_0px_rgba(40,129,205,0.4)] backdrop-blur-md overflow-hidden flex flex-col font-['Pixelify_Sans'] tracking-wide">
-          
-          {/* Retro Window Header */}
-          <div className="bg-primary border-b-4 border-white px-4 py-2 flex items-center justify-between select-none">
-            <div className="flex items-center gap-2">
-              <HiOutlineShieldCheck className="h-4 w-4 text-accent" />
-              <span className="font-['Press_Start_2P'] text-[10px] text-white tracking-widest uppercase">
-                ★ USER-LOGIN.EXE ★
-              </span>
-            </div>
-            <div className="flex gap-1.5">
-              <span className="w-3.5 h-3.5 border-2 border-white bg-transparent flex items-center justify-center font-['Press_Start_2P'] text-[8px] text-white cursor-pointer hover:bg-white/10">-</span>
-              <span className="w-3.5 h-3.5 border-2 border-white bg-transparent flex items-center justify-center font-['Press_Start_2P'] text-[8px] text-white cursor-not-allowed hover:bg-white/10">■</span>
-              <span className="w-3.5 h-3.5 border-2 border-white bg-red-500 flex items-center justify-center font-['Press_Start_2P'] text-[8px] text-white cursor-pointer hover:bg-red-600">X</span>
-            </div>
+        {/* Left Panel */}
+        <div className="hidden md:flex w-1/2 relative flex-col justify-between p-10 bg-gradient-to-br from-[#6B9FE4] via-[#7B6FBE] to-[#a78bfa] overflow-hidden">
+          {/* Decorative circles */}
+          <div className="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-white/10" />
+          <div className="absolute bottom-10 -right-20 w-72 h-72 rounded-full bg-white/10" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full bg-white/5" />
+
+          <div className="relative z-10">
+            <span
+              onClick={() => setActiveLink?.('/')}
+              className="font-['Dancing_Script'] text-2xl font-bold text-white cursor-pointer"
+            >
+              Doc-Intelligence
+            </span>
           </div>
 
-          {/* Form Content */}
-          <div className="p-6 sm:p-8 flex flex-col items-center">
-            
-            {/* Status Tag */}
-            <div className="mb-4 px-3 py-1 border-2 border-primary-light/50 bg-primary/10 text-primary-light font-['Press_Start_2P'] text-[9px] tracking-wide animate-pulse">
-              [ SECURE ACCESS GATEWAY ]
-            </div>
-
-            <h1 className="text-xl sm:text-2xl font-extrabold tracking-wide mb-2 font-['Press_Start_2P'] text-white uppercase text-center">
-              Welcome Back
-            </h1>
-            <p className="text-xs sm:text-sm text-text-secondary mb-6 font-['Pixelify_Sans'] tracking-wide text-center max-w-xs">
-              Log in to access your saved study guides, custom quizzes, and AI tutor features.
+          <div className="relative z-10 space-y-4">
+            <h2 className="text-3xl font-bold text-white leading-snug">
+              Welcome back.<br />Good to see you.
+            </h2>
+            <p className="text-white/70 text-sm leading-relaxed">
+              Sign in to access your documents, AI summaries, quizzes and more.
             </p>
+          </div>
 
-            {error && (
-              <div className="w-full mb-6 p-3 border-2 border-red-500 bg-red-500/10 text-red-400 font-['Press_Start_2P'] text-[9px] leading-relaxed flex items-center gap-2">
-                <span>⚠ {error}</span>
-              </div>
-            )}
+          <div className="relative z-10 flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-bold">D</div>
+            <div>
+              <p className="text-white text-sm font-medium">Doc-Intelligence</p>
+              <p className="text-white/60 text-xs">AI-powered document platform</p>
+            </div>
+          </div>
+        </div>
 
-            <form onSubmit={handleSubmit} className="w-full flex flex-col gap-5">
-              
-              {/* Email Input */}
-              <div className="flex flex-col">
-                <label className="font-['Press_Start_2P'] text-[9px] text-text-secondary uppercase mb-2 flex items-center gap-1.5 select-none">
-                  <HiOutlineEnvelope className="h-3.5 w-3.5 text-accent" />
-                  Email Address
-                </label>
-                <div className="relative flex items-center">
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="student@university.edu"
-                    className="w-full px-3.5 py-2.5 bg-surface-dark/90 border-2 border-white/60 text-white font-['Pixelify_Sans'] text-base tracking-wide focus:outline-none focus:border-accent focus:shadow-[3px_3px_0px_0px_rgba(96,205,255,0.5)] transition-all placeholder:text-white/30"
-                  />
-                </div>
-              </div>
+        {/* Right Panel */}
+        <div className="w-full md:w-1/2 bg-surface-light p-8 sm:p-12 flex flex-col justify-center">
+          <h1 className="text-2xl font-bold text-text-primary mb-1">Sign in</h1>
+          <p className="text-sm text-text-secondary mb-8">Enter your credentials to continue</p>
 
-              {/* Password Input */}
-              <div className="flex flex-col">
-                <div className="flex justify-between items-center mb-2">
-                  <label className="font-['Press_Start_2P'] text-[9px] text-text-secondary uppercase flex items-center gap-1.5 select-none">
-                    <HiOutlineLockClosed className="h-3.5 w-3.5 text-accent" />
-                    Password
-                  </label>
-                </div>
-                <div className="relative flex items-center">
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••••••"
-                    className="w-full px-3.5 py-2.5 pr-10 bg-surface-dark/90 border-2 border-white/60 text-white font-['Pixelify_Sans'] text-base tracking-wide focus:outline-none focus:border-accent focus:shadow-[3px_3px_0px_0px_rgba(96,205,255,0.5)] transition-all placeholder:text-white/30"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 text-text-secondary hover:text-white focus:outline-none cursor-pointer"
-                  >
-                    {showPassword ? (
-                      <HiOutlineEyeSlash className="h-4 w-4" />
-                    ) : (
-                      <HiOutlineEye className="h-4 w-4" />
-                    )}
-                  </button>
-                </div>
-              </div>
+          {error && (
+            <div className="mb-5 px-4 py-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
+              {error}
+            </div>
+          )}
 
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full font-['Press_Start_2P'] text-xs px-6 py-3.5 border-4 border-white bg-primary text-white font-bold transition-all duration-75 shadow-[5px_5px_0px_0px_#000] hover:shadow-[3px_3px_0px_0px_#000] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none hover:bg-primary-light cursor-pointer uppercase flex items-center justify-center gap-2.5 mt-2 select-none disabled:opacity-50"
-              >
-                {isSubmitting ? (
-                  <span>AUTHENTICATING...</span>
-                ) : (
-                  <>
-                    <span>Enter Workspace</span>
-                    <HiOutlineArrowRight className="h-4 w-4" />
-                  </>
-                )}
-              </button>
-            </form>
-
-            {/* Footer / Switch to Register */}
-            <div className="mt-8 pt-6 border-t-2 border-white/10 w-full text-center flex flex-col items-center gap-2">
-              <p className="text-xs text-text-secondary font-['Pixelify_Sans'] tracking-wide">
-                Don't have an account yet?
-              </p>
-              <Link
-                to="/register"
-                onClick={() => setActiveLink && setActiveLink('/register')}
-                className="font-['Press_Start_2P'] text-[9px] text-accent hover:text-accent/80 transition-colors uppercase underline tracking-wider select-none flex items-center gap-1.5"
-              >
-                <HiOutlineSparkles className="h-3.5 w-3.5 inline" /> Create New Account
-              </Link>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-semibold text-text-secondary uppercase tracking-wider">Email address</label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                className="w-full px-4 py-3 rounded-lg bg-surface border border-border text-text-primary text-sm placeholder:text-text-secondary/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+              />
             </div>
 
-          </div>
+            <div className="flex flex-col gap-1.5">
+              <div className="flex justify-between items-center">
+                <label className="text-xs font-semibold text-text-secondary uppercase tracking-wider">Password</label>
+                <button
+                  type="button"
+                  onClick={() => setActiveLink?.('/forgot-password')}
+                  className="text-xs text-primary hover:underline cursor-pointer"
+                >
+                  Forgot password?
+                </button>
+              </div>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full px-4 py-3 pr-11 rounded-lg bg-surface border border-border text-text-primary text-sm placeholder:text-text-secondary/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary cursor-pointer"
+                >
+                  {showPassword ? <HiOutlineEyeSlash className="h-4 w-4" /> : <HiOutlineEye className="h-4 w-4" />}
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full py-3 rounded-lg bg-primary text-white font-semibold text-sm flex items-center justify-center gap-2 hover:bg-primary-light transition-colors disabled:opacity-50 cursor-pointer mt-1"
+            >
+              {isSubmitting ? 'Signing in...' : <><span>Sign In</span><HiOutlineArrowRight className="h-4 w-4" /></>}
+            </button>
+          </form>
+
+          <p className="mt-8 text-center text-sm text-text-secondary">
+            Don't have an account?{' '}
+            <button
+              onClick={() => setActiveLink?.('/register')}
+              className="text-primary font-semibold hover:underline cursor-pointer"
+            >
+              Create one
+            </button>
+          </p>
         </div>
       </div>
     </div>

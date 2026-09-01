@@ -58,9 +58,11 @@ export default function Layout({ children, activeLink, setActiveLink, isLoggedIn
       <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-primary-light/5 rounded-full blur-[100px] pointer-events-none z-0"></div>
 
       {/* Header Navbar */}
-      <div className="relative z-20">
-        <Navbar activeLink={activeLink} setActiveLink={setActiveLink} isLoggedIn={isLoggedIn} onLogout={onLogout} />
-      </div>
+      {activeLink !== '/login' && activeLink !== '/register' && (
+        <div className="relative z-20">
+          <Navbar activeLink={activeLink} setActiveLink={setActiveLink} isLoggedIn={isLoggedIn} onLogout={onLogout} />
+        </div>
+      )}
 
       {/* Main Workspace Body */}
       <main className={activeLink === '/' ? "relative z-10 flex-1 w-full pb-32" : "relative z-10 flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-32"}>

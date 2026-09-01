@@ -17,11 +17,9 @@ export const Footer = ({ setActiveLink }) => {
           {/* Left Side: Brand Logo & Copyright */}
           <div className="md:col-span-4 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 border border-border bg-primary text-white rounded-lg shadow-sm">
-                <HiOutlineAcademicCap className="h-6 w-6" />
-              </div>
-              <span className="text-base sm:text-lg font-bold tracking-tight text-text-primary font-['Press_Start_2P'] uppercase">
-                DocIntelligence
+              
+              <span className="text-base sm:text-lg font-bold tracking-tight text-text-primary font-['Times_New_Roman'] uppercase">
+                Document Intelligence System
               </span>
             </div>
             <p className="text-xs sm:text-sm text-text-secondary font-normal">
@@ -150,7 +148,7 @@ export const Footer = ({ setActiveLink }) => {
 
       {/* Massive Edge-to-Edge Background Typography Watermark */}
       <div className="w-full pt-12 pb-0 overflow-hidden flex justify-center items-center pointer-events-none select-none">
-        <span className="text-[13vw] sm:text-[14vw] font-black tracking-tighter leading-none text-text-primary/5 dark:text-white/5 uppercase whitespace-nowrap">
+        <span className="text-[13vw] sm:text-[14vw] font-black tracking-tighter leading-none text-text-primary/20 uppercase whitespace-nowrap">
           DocIntelligence
         </span>
       </div>

@@ -8,7 +8,6 @@ import {
   HiOutlineChartBar,
   HiOutlineArrowRight,
   HiOutlineCheckCircle,
-  HiOutlineBuildingLibrary,
   HiOutlineCheckBadge,
   HiOutlineArrowTrendingUp,
   HiOutlineCircleStack,
@@ -40,7 +39,7 @@ export const Services = ({ setActiveLink }) => {
         'Structured section & summary extraction',
         'Semantic key-concept indexing'
       ],
-      stats: 'Fast & Accurate',
+      
       route: '/UploadPdf'
     },
     {
@@ -59,7 +58,7 @@ export const Services = ({ setActiveLink }) => {
         'Socratic explanation mode',
         'Multi-document cross querying'
       ],
-      stats: 'Instant Responses',
+      
       route: '/chat'
     },
     {
@@ -78,7 +77,7 @@ export const Services = ({ setActiveLink }) => {
         'Step-by-step solution rationales',
         'Weak-spot review recommendations'
       ],
-      stats: 'Instant Creation',
+     
       route: '/quiz'
     },
     {
@@ -97,7 +96,7 @@ export const Services = ({ setActiveLink }) => {
         'Audio pronunciation & formula previews',
         'Deck progress & mastery tracking'
       ],
-      stats: 'Long-Term Retention',
+      
       route: '/flashcards'
     },
     {
@@ -116,7 +115,7 @@ export const Services = ({ setActiveLink }) => {
         'Study velocity & streak counter',
         'AI personalized study suggestions'
       ],
-      stats: 'Real-time Analytics',
+   
       route: '/dashboard'
     }
   ];
@@ -166,7 +165,7 @@ export const Services = ({ setActiveLink }) => {
         {/* Card swipe feature*/}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-border pb-5 mb-8 gap-4">
             <div className="flex items-center gap-3">
-              <span className="w-2.5 h-2.5 bg-primary rounded-full" />
+             
               <h3 className="text-lg sm:text-xl font-bold text-text-primary tracking-tight">
                 Features showcase
               </h3>
@@ -184,7 +183,7 @@ export const Services = ({ setActiveLink }) => {
             <div className="lg:col-span-5 space-y-6 flex flex-col justify-between h-full">
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 text-xs font-semibold rounded-full bg-primary/20 text-accent border border-primary-light/50">
+                  <span className="px-3 py-1 text-xs font-semibold rounded-full  text-accent">
                     {serviceCards[selectedCardIdx].badge}
                   </span>
                   <span className="text-xs text-text-secondary font-['Pixelify_Sans']">
@@ -217,13 +216,7 @@ export const Services = ({ setActiveLink }) => {
 
               {/* Action Buttons & Indicator */}
               <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-                <button
-                  onClick={() => handleNavigate(serviceCards[selectedCardIdx].route)}
-                  className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-primary-dark to-primary-light text-white font-semibold text-xs shadow-md shadow-primary/20 hover:shadow-primary/35 hover:-translate-y-0.5 transition-all cursor-pointer flex items-center justify-center gap-2 group"
-                >
-                  <span>Launch Tool</span>
-                  <HiOutlineArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
+               
 
                 <div className="flex items-center gap-2 justify-center sm:justify-start">
                   {serviceCards.map((_, idx) => (
@@ -383,13 +376,7 @@ export const Services = ({ setActiveLink }) => {
                     <span className="text-xs font-medium text-accent">
                       {service.stats}
                     </span>
-                    <button
-                      onClick={() => handleNavigate(service.route)}
-                      className="text-xs px-3.5 py-2 rounded-lg border border-border bg-primary text-white hover:bg-primary-light transition-all cursor-pointer font-medium flex items-center gap-1.5"
-                    >
-                      <span>Try Now</span>
-                      <HiOutlineArrowRight className="w-3.5 h-3.5" />
-                    </button>
+                    
                   </div>
                 </div>
               );
